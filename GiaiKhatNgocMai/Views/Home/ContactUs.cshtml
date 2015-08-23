@@ -1,0 +1,52 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ContactViewModel
+
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <div class="breadcrumb_inner">
+                @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+        <span>
+        </span>
+        <div class="error hidden">
+            <p></p>
+            <ol>
+                <li></li>
+            </ol>
+        </div>
+        <div id="sent_message" class="hidden">
+            <p class="info_success">Tin nhắn gửi thành công. Cảm ơn bạn đã quan tâm tới shop.</p>
+        </div>
+        <div id="wrap">
+            <h1>send a message </h1>
+            <div id='form_wrap'>
+                <form>
+                    <p>Hi Giai khat Ngoc Mai,</p>
+                    <label for="message">Tin nhan : </label><span class="error" rel="message"></span>
+                    <textarea name="message" value="" id="message" class="required"></textarea>
+                    <p>Best,</p>
+                    <label for="name">Ten nguoi gui: </label><span class="error" rel="name"></span>
+                    <input type="text" name="name" value="" id="name" class="required" />
+                    <label for="email">Email: </label><span class="error" rel="email"></span>
+                    <input type="text" name="email" value="" id="email" class="required" />
+                    <input type="button" name="submit" id="submit" value="OK, Send!" />
+                    <p class="hidden" id="processing">
+                        Sending <img src="~/Content/images/facebook_style_loader.gif" style="vertical-align:baseline;"/>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section pagestyles{
+    <link href="~/Content/css/contact.css" type="text/css" rel="stylesheet" />
+}
+
+@section pagescripts{
+    <script type="text/javascript" src="~/Scripts/contact.form.js"></script>
+}

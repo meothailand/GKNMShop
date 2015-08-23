@@ -1,0 +1,94 @@
+﻿@model GiaiKhatNgocMai.Models.LogicModel.OrderModel
+@{ var culture = GiaiKhatNgocMai.Settings.SiteSettings.GetCulture; }
+<div class="table_block">
+    <table id="cart_summary" class="std">
+        <caption>
+            Đơn hàng: #@Model.OrderNumber - Ngày đặt: @string.Format(culture,"{0: dd MMM yy}", Model.OrderedDate) - @(Model.Delivery ? "Giao hàng" : "Khách đến nhận hàng") - Trạng thái: @Model.StatusText
+        </caption>
+        <thead>
+            <tr>
+                <th class="cart_description item">Tên sản phẩm</th>
+                <th class="cart_ref item">Đơn vị</th>
+                <th class="cart_unit item">Giá</th>
+                <th class="cart_quantity item">Số lượng</th>
+                <th class="cart_total last_item">Thành tiền</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="cart_total_price">
+                <td colspan="4">Tổng đơn hàng:</td>
+                <td class="price" id="total_product">
+                    <span class="price">
+                        @string.Format(culture, "{0:c0}", Model.OrderDetails.Sum(i => i.Quantity * i.Price))
+                    </span>
+                </td>
+            </tr>
+            <tr class="cart_total_delivery">
+                <td colspan="4">Phí giao hàng:</td>
+                <td class="price" id="total_shipping">
+                    <span class="price">
+                        @string.Format(culture, "{0:c0}", Model.ShipmentFee)
+                    </span>
+                </td>
+            </tr>
+            <tr class="cart_total_price">
+                <td colspan="4">
+                    Tổng thành tiền:
+                </td>
+                <td class="price" id="total_price"><span class="price">@string.Format(culture, "{0:c0}", Model.Total)</span></td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    @(string.IsNullOrWhiteSpace(Model.Note) ? "Không có ghi chú" : Model.Note)
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var dt in Model.OrderDetails)
+            {
+                <tr class="cart_item">
+                    <td class="cart_description">
+                        <h5><a class="product_link" href="/san-pham/chi-tiet/@dt.ItemId/@dt.UrlName">@dt.ItemName</a></h5>
+                    </td>
+                    <td class="cart_ref">@dt.Unit</td>
+                    <td class="cart_unit">
+                        <span class="price">
+                            @string.Format(culture, "{0:c0}", dt.Price)
+                        </span>
+                    </td>
+                    <td class="cart_quantity">
+                        @dt.Quantity
+                    </td>
+                    <td class="cart_total">
+                        <span class="price">
+                            @string.Format(culture, "{0:c0}", dt.Price * dt.Quantity)
+                        </span>
+                    </td>
+                </tr>
+            }
+
+            @*<tr id="product_1_0" class=" cart_item">
+                    <td class="cart_description">
+                        <h5 class="sub_item"><a class="product_link" href="">Lorem ipsum dolor sit amet conse</a></h5>
+                    </td>
+                    <td class="cart_availability">
+                    </td>
+                    <td class="cart_ref">—</td>
+                    <td class="cart_unit">
+                        <span class="price" id="product_price_1_0">
+                            $9.10
+                        </span>
+                    </td>
+                    <td class="cart_quantity">
+                        2
+                    </td>
+                    <td class="cart_total">
+                        <span class="price" id="total_product_price_1_0">
+                            $18.20
+                        </span>
+                    </td>
+                </tr>*@
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[SiteNews]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Title] nvarchar(100) NOT NULL,
+	[UrlTitle] NVARCHAR(150),
+	[Content] ntext,
+	[DatePosted] DATETIME NOT NULL DEFAULT GETDATE(),
+	[DateUpdated] DATETIME NOT NULL DEFAULT GETDATE()
+)

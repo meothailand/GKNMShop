@@ -1,0 +1,107 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+
+<div class="order_sum">
+    <p>Khách hàng: @Model.Cart.CustomerName</p>
+    <p>Số ĐT: @Model.Cart.ContactNumber</p>
+    @if(Model.Cart.Delivery)
+    {
+        <p>Địa chỉ giao hàng: @(Model.Cart.ShipmentAddress + " " + Model.Cart.ShipmentDistrict), TPHCM</p>
+    }else
+    {
+        <p>Địa chỉ giao hàng: Khách nhận hàng tại Giải khát Ngọc Mai</p>
+    }
+    
+    <p>Thời gian giao: @string.Format(Model.Culture(), "{0: dd MMMM yyyy hh:mm tt}", Model.Cart.ShipmentDate)</p>
+</div>
+<div id="order-detail-content" class="table_block">
+    <table id="cart_summary" class="std">
+        <thead>
+            <tr>
+                <th class="cart_description item">Tên sản phẩm</th>
+                <th class="cart_availability item">Topping</th>
+                <th class="cart_ref item">Đơn vị</th>
+                <th class="cart_unit item">Giá</th>
+                <th class="cart_quantity item">Số lượng</th>
+                <th class="cart_total last_item">Thành tiền</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="cart_total_price">
+                <td colspan="5">Tổng đơn hàng:</td>
+                <td class="price" id="total_product"><span class="price">
+                    @string.Format(Model.Culture(), "{0:c0}", Model.Cart.OrderDetails.Sum(i => i.Quantity * i.Price))</span></td>
+            </tr>
+            <tr class="cart_total_delivery">
+                <td colspan="5">Phí giao hàng:</td>
+                <td class="price" id="total_shipping"><span class="price" style="@(Model.Cart.Delivery && Model.Cart.Total >= Model.Cart.FeeThreshold ? "text-decoration:line-through;" : "")">
+                    @string.Format(Model.Culture(), "{0:c0}", Model.Cart.ShipmentFee)</span></td>
+            </tr>
+            <tr class="cart_total_price">
+                <td colspan="5">
+                    Tổng thành tiền:
+                </td>
+                <td class="price" id="total_price"><span class="price">@string.Format(Model.Culture(), "{0:c0}", Model.Cart.Total)</span></td>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var dt in Model.Cart.OrderDetails)
+            {
+                <tr class="cart_item">
+                    <td class="cart_description">
+                        <h5><a class="product_link" href="/san-pham/chi-tiet/@dt.ItemId/@dt.UrlName">@dt.ItemName</a></h5>
+                    </td>
+                    <td class="cart_availability">
+                        <img src="@Href("~/Content/images/available.png")" alt="thêm topping" />
+                    </td>
+                    <td class="cart_ref">@dt.Unit</td>
+                    <td class="cart_unit">
+                        <span class="price">
+                            @string.Format(Model.Culture(), "{0:c0}", dt.Price)
+                        </span>
+                    </td>
+                    <td class="cart_quantity">
+                        @dt.Quantity
+                    </td>
+                    <td class="cart_total">
+                        <span class="price">
+                            @string.Format(Model.Culture(), "{0:c0}", dt.Price*dt.Quantity)
+                        </span>
+                    </td>
+                </tr>
+            }
+            
+            @*<tr id="product_1_0" class=" cart_item">
+                <td class="cart_description">
+                    <h5 class="sub_item"><a class="product_link" href="">Lorem ipsum dolor sit amet conse</a></h5>
+                </td>
+                <td class="cart_availability">
+                </td>
+                <td class="cart_ref">—</td>
+                <td class="cart_unit">
+                    <span class="price" id="product_price_1_0">
+                        $9.10
+                    </span>
+                </td>
+                <td class="cart_quantity">
+                    2
+                </td>
+                <td class="cart_total">
+                    <span class="price" id="total_product_price_1_0">
+                        $18.20
+                    </span>
+                </td>
+            </tr>*@
+        </tbody>
+    </table>
+</div>
+<div class="table_block">
+    <h2>Ghi chú</h2>
+    <p class="text order_note">
+        @Model.Cart.Note
+    </p>
+</div>
+<div id="HOOK_SHOPPING_CART"></div>
+<p class="cart_navigation">
+    <a href="/dat-hang/luu-don-hang" class=" exclusive" title="Next">Đặt hàng »</a>
+    <a href="@Model.Steps[2].Url" class="button_large" title="Quay lại">« Chỉnh sửa</a>
+</p>

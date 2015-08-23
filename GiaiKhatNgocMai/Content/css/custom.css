@@ -1,0 +1,84 @@
+/* here you can put your own css to customize and override the theme */
+
+.messageBox {
+    color: red;
+    text-align: center;
+    font-size: 12pt;
+}
+
+.hideMessage {
+    display: none
+}
+
+.seperator {
+    text-align: left;
+    color: blue;
+    font-size: 10pt;
+    margin: 10px 0px;
+    font-weight: bold;
+}
+
+.overdued {
+    color: maroon!important;
+}
+
+.warningRecord {
+    color:  magenta!important;
+}
+
+.dataTable thead {
+    background-color: #FFB848;
+}
+
+img.bannerThumb {
+    height: 50px;
+    margin: 5px; 
+}
+
+.artist-avatar img
+{
+    width:100px;
+    height:auto;
+    margin: auto;
+}
+
+.dataTable tbody tr td {
+    vertical-align: middle;
+}
+
+.dataTable tbody tr td.text-primary {
+    font-size:150%;
+    color:#000;
+}
+
+.artist-review{
+    padding: 5px;
+}
+
+.artist-review img{
+    width: 100%;
+    height:auto;
+    max-width: 250px;
+    min-width: 100px;
+}
+
+.artwork-thumb img{
+    height:100px;
+    width:auto;
+    margin: auto;
+}
+
+.home-page-image-thumb{
+    width:100%;
+    height:auto;
+}
+
+label.company-profile{
+    text-align:left!important;
+    color: blue;
+    font-weight:bold;
+}
+
+td.con-image{
+    background-color:#000BBB!important;
+}

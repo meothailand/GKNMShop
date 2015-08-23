@@ -1,0 +1,124 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+<p class="text">
+    <a href="javascript:void(0);" class="@(Model.Cart.Delivery ? "button" : "button button_secondary")" id="delivery_form_btn">Sử dụng dịch vụ giao hàng</a>
+    <a href="javascript:void(0);" class="@(!Model.Cart.Delivery ? "button" : "button button_secondary")" id="nondelivery_form_btn">Khách đến shop nhận hàng >>></a>
+</p>
+
+<form action="/dat-hang/buoc/3/giaohang" method="post" id="delivery_form" class="@(Model.Cart.Delivery ? "std" : "std hidden")">
+    <fieldset>
+        <h4>Vui lòng nhập đầy đủ địa chỉ và thời gian giao hàng.</h4>
+        <p class="text">
+            <label for="shipment_address" class="required">Địa chỉ giao hàng<sub>*</sub></label>
+            <input id="shipment_address" name="shipment_address" value="@Model.Cart.ShipmentAddress" class="shipment_input required" type="text" placeholder="VD: 4 Nguyễn Đình Chiểu P.Đakao">
+        </p>
+        <p class="text">
+            <label for="shipment_district" class="required">Quận<sub>*</sub></label>
+            <select id="shipment_district" name="shipment_district" class="shipment_input required">
+                <option value="">---</option>
+                @foreach (var i in Model.ShipmentFees)
+                {
+                    if (Model.Cart.ShipmentDistrict != null && Model.Cart.ShipmentDistrict == i.District)
+                    {
+                        <option value="@i.Id" selected>@i.District</option>
+                        continue;
+                    }
+                    <option value="@i.Id">@i.District</option>
+                }
+            </select> TP. HCM
+        </p>
+        <p class="text">
+            <label for="shipmentfee">Phí giao hàng</label>
+            @if (Model.Cart.ShipmentDistrict != null && Model.ShipmentFees.Exists(i => i.District == Model.Cart.ShipmentDistrict))
+            {
+                var fee = Model.ShipmentFees.FirstOrDefault(i => i.District == Model.Cart.ShipmentDistrict);
+                <input id="shipmentfee" name="shipmentfee" value="@(fee.Fee.ToString("0 đ"))" 
+                       style="text-decoration:@(Model.Cart.Total >= Model.Cart.FeeThreshold ? "line-through" : "none")" type="text" readonly="readonly" />
+                <span id="fee_threshold" style="color:blue; font-size:10pt; display:@(Model.Cart.Total >= Model.Cart.FeeThreshold ? "inline-block" : "none"); margin-left:5px;">Không tính ship với đơn hàng từ @fee.FreeThreshold đ</span>
+                <input type="hidden" value="@Model.Cart.Total" id="order_total" readonly="readonly" />
+            }
+            else
+            {
+                <input id="shipmentfee" name="shipmentfee" value="" class="" type="text" readonly="readonly">
+                <span id="fee_threshold" style="color:blue; font-size:10pt; margin-left:5px; display:none;"></span>
+                <input type="hidden" value="@Model.Cart.Total" id="order_total" readonly="readonly" />
+            }
+            
+        </p>
+        <p class="text">
+            <label for="shipment_date" class="required">Thời gian giao hàng<sub>*</sub></label>
+            <input type="text" id="shipment_date" name="shipment_date" class="shipment_input hidden"
+                   value="@(Model.Cart.ShipmentDate == DateTime.MinValue ? DateTime.Now.Date.ToString("yyyy/MM/dd") : Model.Cart.ShipmentDate.ToString("yyyy/MM/dd"))" />
+            <input type="text" id="shipment_dateshow" name="shipment_dateshow" class="shipment_input"
+                   value="@(Model.Cart.ShipmentDate == DateTime.MinValue ? string.Format(Model.Culture(), "{0:D}", DateTime.Now.Date) : string.Format(Model.Culture(), "{0:D}", Model.Cart.ShipmentDate))" />
+            <select class="shipment_input" id="shipment_time" name="shipment_time">
+                @{var time = DateTime.Now.AddMinutes(75);
+                  var hour = Model.Cart.ShipmentDate == DateTime.MinValue ? (time.Minute < 30) ? time.Hour : time.Hour + 1 :
+                              Model.Cart.ShipmentDate.Hour;
+                var noSelected = true;
+                foreach (var t in Model.DeliveryTime)
+                {
+                    if (noSelected && t.Key >= hour)
+                    {
+                        <option value="@t.Key" selected>@t.Value</option>
+                        noSelected = false;
+                        continue;
+                    }
+                    <option value="@t.Key">@t.Value</option>
+                }
+                }
+            </select>
+        </p>
+        <p class="submit">
+            <input id="submitsave" name="submitsave" class="button_large" value="Tiếp tục" type="button">
+        </p>
+        <p class="text" hidden>
+            <select id="shipfee" name="shipfee">
+                @foreach (var i in Model.ShipmentFees)
+                {
+                    <option value="@i.Id">@string.Format(Model.Culture(), "{0:c0}", i.Fee)</option>
+                }
+            </select>
+            <select id="shipfeethreshold" name="shipfeethreshold">
+                @foreach (var i in Model.ShipmentFees)
+                {
+                    <option value="@i.Id">@i.FreeThreshold</option>
+                }
+            </select>
+        </p>
+    </fieldset>
+</form>
+
+<form action="/dat-hang/buoc/3/nhanhang" method="post" id="nondelivery_form" class="@(Model.Cart.Delivery ? "std hidden" : "std")">
+    <fieldset>
+        <h4>Vui lòng nhập thời gian nhận hàng.</h4>
+        <p class="text">
+            <label for="shipment_date1" class="required">Thời gian giao hàng<sub>*</sub></label>
+            <input type="text" id="shipment_date1" name="shipment_date1" class="shipment_input hidden"
+                   value="@(Model.Cart.ShipmentDate == DateTime.MinValue ? DateTime.Now.Date.ToString("yyyy/MM/dd") : Model.Cart.ShipmentDate.ToString("yyyy/MM/dd"))" />
+            <input type="text" id="shipment_date1show" name="shipment_date1show" class="shipment_input"
+                   value="@(Model.Cart.ShipmentDate == DateTime.MinValue ? string.Format(Model.Culture(), "{0:D}", DateTime.Now.Date) : string.Format(Model.Culture(), "{0:D}",Model.Cart.ShipmentDate))" />
+            <select class="shipment_input" id="shipment_time1" name="shipment_time1">
+                @{var time1 = DateTime.Now.AddMinutes(75);
+                var hour1 = Model.Cart.ShipmentDate == DateTime.MinValue ? (time1.Minute < 30) ? time1.Hour : time1.Hour + 1 :
+                            Model.Cart.ShipmentDate.Hour;
+                var noSelected1 = true;
+                foreach (var t in Model.DeliveryTime)
+                {
+                    if (noSelected1 && t.Key >= hour1)
+                    {
+                        <option value="@t.Key" selected>@t.Value</option>
+                        noSelected1 = false;
+                        continue;
+                    }
+                    <option value="@t.Key">@t.Value</option>
+                }
+                }
+            </select>
+        </p>
+        <p class="submit">
+            <input id="submitsave_non" name="submitsave_non" class="button_large" value="Tiếp tục" type="button">
+        </p>
+    </fieldset>
+</form>
+
+<div class="clearblock"></div>

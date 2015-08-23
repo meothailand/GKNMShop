@@ -1,0 +1,82 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CustomerAccountViewModel
+
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <div class="breadcrumb_inner">
+                <a href="/" title="return to Home">Trang chủ</a><span class="navigation-pipe">&gt;</span><span class="navigation_page">Đăng ký tài khoản</span>
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+        <span></span>
+        <div class="@(Model.IsError ? "error":"error hidden")">
+            <p></p>
+            <ol id="error_list">
+                <li>@Model.Message</li>
+            </ol>
+        </div>
+        <form action="/khach-hang/dang-ky" method="post" id="create-account_form" class="std authentication">
+            <fieldset>
+                <h3>Vui lòng điền đầy đủ tất cả các thông tin</h3>
+                <p class="text">
+                    <label for="customerName">Tên khách hàng<sub>*</sub></label>
+                    <input type="text" id="customerName" name="customerName" value="@Model.CustomerAccount.CustomerName" class = "account_input required" title = "Tên khách hàng" />
+                </p>
+                <p class="text">
+                    <label for="customerPhone" class="">Số điện thoại<sub>*</sub></label>
+                    <input type="text" id="customerPhone" name="customerPhone" value="@Model.CustomerAccount.CustomerPhone"
+                           class="account_input required" title="Số điện thoại liên hệ" />
+                </p>
+                <p class="text">
+                    <label for="customerEmail" class="">Email<sub>*</sub></label>
+                    <input type="text" id="customerEmail" name="customerEmail" value="@Model.CustomerAccount.CustomerEmail"
+                           class="account_input required" title="Địa chỉ email" />
+                </p>
+                <p class="text">
+                    <label for="password" class="">Password<sub>*</sub></label>
+                    <input type="password" id="customerPassword" name="customerPassword" value=""
+                           class="account_input required" title="Mật khẩu" />
+                </p>
+                <p class="text">
+                    <label for="confirmPassword" class="">Confirm password<sub>*</sub></label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" value=""
+                           class="account_input required" title="Xác nhận mật khẩu" />
+                </p>
+                <p class="text">
+                    <label for="shipAddress" class="">Địa chỉ giao hàng<sub>*</sub></label>
+                    <input type="text" id="shipAddress" name="shipAddress" value="@Model.CustomerAccount.ShipAddress"
+                           class="account_input required" title="Địa chỉ (giao hàng)" />
+
+                </p>
+                <p class="text">
+                    <label for="shipDistrict" class="">Quận<sub>*</sub></label>
+                    @*@Html.DropDownListFor(i => i.CustomerAccount.ShipDistrict , new SelectList(Model.ShipmentFees, "Id","District"),
+                    new { @class = "shipment_input required" })*@
+                    <select id="shipDistrict" name="shipDistrict" class="account_input required" title="Quận">
+                        <option value="">---</option>
+                        @foreach (var i in Model.ShipmentFees)
+                        {
+                            if (Model.CustomerAccount.ShipDistrict != null && Model.CustomerAccount.ShipDistrict == i.District)
+                            {
+                                <option value="@i.District" selected>@i.District</option>
+                                continue;
+                            }
+                            <option value="@i.District">@i.District</option>
+                        }
+                    </select> TP. HCM
+                </p>
+                <p class="submit">
+                    <input id="submit_button" name="submit_button" value="Đăng ký" type="button" class="button">&nbsp;
+                </p>
+                <p class="text">
+                    <div class="highlight_text">*** Bằng việc nhấn [Đăng ký] bạn đã chấp thuận các điều khoản của Giải khát Ngọc Mai.</div>
+                </p>
+            </fieldset>
+        </form>
+    </div>
+}
+
+@section pagescripts{
+    <script type="text/javascript" src="~/Scripts/account.forms.js"></script>    
+}

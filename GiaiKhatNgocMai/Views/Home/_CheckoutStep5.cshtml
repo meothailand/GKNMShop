@@ -1,0 +1,61 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+
+<div class="table_block invoice">
+    <div class="container">
+        <div class="left_margin">&nbsp;</div>
+        <div class="invoice_content">
+            <div class="invoice_top">
+                <img src="~/Content/images/order-quote-banner.png" />
+            </div>
+            <div class="invoice_content_wrapper">
+                <div class="invoice_info">
+                    <h4>Đơn đặt hàng</h4>
+                    <ul>
+                        <li>Mã đơn hàng: <span>@Model.CartReview.OrderNumber</span></li>
+                        <li>Khách hàng: <span>@Model.CartReview.CustomerName</span></li>
+                        <li>ĐT: <span>@Model.CartReview.ContactNumber</span></li>
+                        <li>Thời gian: <span>@string.Format(Model.Culture(), "{0: dd MMMM yyyy hh:mm tt}", Model.Cart.ShipmentDate)</span></li>
+                        @{
+                            var first = true;
+                            var index = 0;
+                            var charsTake = 0;
+                            var length = Model.CartReview.ShipmentAddress.Length;
+                            while (length > 0)
+                            {
+                                charsTake = length >= 49 ? 49 : length;
+                                length = length - charsTake;
+                                if (first)
+                                {
+                                    <li>Địa chỉ: <span>@Model.CartReview.ShipmentAddress.Substring(0, charsTake)</span></li>
+                                    first = false;
+                                }
+                                else
+                                {
+                                    <li class="non-list"><span>@Model.CartReview.ShipmentAddress.Substring(index, charsTake)</span></li>
+                                }
+                                index += 49;
+                            }
+}
+                        <li>Tổng giá trị đơn hàng: <span>@string.Format(Model.Culture(), "{0:c0}", Model.CartReview.Total)</span></li>
+                    </ul>
+                </div>
+                <div class="invoice_note">
+                    <div class="invoice_note_item">
+                        <ul>
+                            <li>Cảm ơn bạn đã đặt hàng tại website Giải khát Ngọc Mai. Nhân</li>
+                            <li class="non-list">viên của chúng tôi sẽ liên hệ bạn qua số ĐT <span>@Model.CartReview.ContactNumber</span> để</li>
+                            <li class="non-list">xác nhận đơn hàng.</li>
+                            <li><span>Đơn hàng chỉ được thực hiện sau khi chúng tôi xác</span></li>
+                            <li class="non-list"><span>nhận thành công.</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="invoice_signature">
+                    <img src="~/Content/images/order-signature.png" />
+                </div>
+            </div>
+    </div>
+        <div class="right_margin">&nbsp;</div>
+    </div>
+    <div class="invoice_footer">&nbsp;</div>
+</div>

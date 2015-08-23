@@ -1,0 +1,82 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ViewModelBase
+
+@section content{
+<div id="center_column" class="center_column">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+    </div>
+    <!-- /Breadcrumb -->
+    <h1>Chính sách đặt hàng và giao hàng</h1>
+    <p class="cat_desc">
+        Các sản phẩm của shop được làm từ nguyên liệu tươi và không dùng chất bảo quản nên thời gian cũng như việc vận chuyển sản phẩm
+        là vấn đề cần được quan tâm. Những chính sách về giao hàng và đặt hàng của shop là nhằm đảm bảo chất lượng cả về sản phẩm lẫn 
+        về dịch vụ cho khách hàng. Mong khách hàng đọc và hỗ trợ shop bằng cách thực hiện theo các chính sách này để mỗi sản phẩm shop bán
+        ra cho khách hàng đều có chất lượng tốt nhất và phục vụ chu đáo nhất. Shop cảm ơn quý khách!
+    </p>
+     <!-- /Sort products -->
+    <div class="policy_block">
+        <h2>Chính sách đặt hàng</h2>
+        <ul class="bullet">
+            <li><span>Khách hàng có thể đặt hàng qua website, điện thoại (zalo, viber) hay chat skype</span></li>
+            <li><span>Đối với khách hàng đặt hàng qua điện thoại hoặc Skype nhân viên sẽ trực tiếp thảo luận với khách về thời gian và 
+                phương thức giao hàng sao cho thuận lợi cho khách nhất mà vẫn đảm bảo chất lượng sản phẩm khi đến tay khách</span></li>
+            <li><span>Với khách hàng đặt qua website, vui lòng cung cấp các thông tin sau:</span>
+                <ol>
+                    <li>Tên khách hàng</li>
+                    <li>Số điện thoại liên lạc</li>
+                    <li>Địa chỉ giao hàng (nếu sử dụng dịch vụ giao hàng)</li>
+                    <li>Thời gian giao/nhận hàng (ít nhất sau 45 phút kể từ thời gian đặt hàng)*</li>
+                    <li class="desc">45 phút là thời gian trung bình, tuỳ theo số lượng của đơn hàng và quãng đường vận chuyển từ shop
+                    đến khách hàng mà thời gian này sẽ ngắn hơn hoặc dài hơn chút ít. Tuy nhiên shop luôn cố gắng giao hàng cho khách
+                    trong thời gian sớm nhất.</li>
+                </ol>
+            </li>
+            <li><span>
+            Sau khi đơn hàng đã được đặt, nhân viên của shop sẽ liên hệ lại với khách hàng qua số điện thoại khách hàng cung cấp (chỉ
+            khi khách đặt qua website) để xác nhận đơn hàng</span></li>
+            <li><span>Đơn hàng của quý khách chỉ được thực hiện khi nhân viên chúng tôi liên hệ với khách thành công.</span></li>
+        </ul>
+        <h2>Chính sách giao hàng</h2>
+        <ul class="bullet">
+            <li><span>Để đảm bảo chất lượng của sản phẩm, shop chỉ thực hiện món uống khi có đơn đặt hàng. Shop không làm trước và không có
+                sử dụng chất bảo quản. Vì vậy khách có nhu cầu đặt hàng và giao hàng với số lượng lớn (vd: 20 chai trở lên) hay khách ở xa
+                vui lòng đặt hàng sớm để được phục vụ tốt nhất</span></li>
+            <li>
+                <span>
+                    Shop chỉ giao hàng trong nội thành TP.HCM
+                </span>
+            </li>
+            <li>
+                <span>Khách sử dụng dịch vụ giao hàng tận nơi xin tham khảo bảng phí giao hàng bên dưới</span>
+            </li>
+        </ul>
+    </div>
+    <div class="policy_block">
+        <h2>Phí giao hàng</h2>
+        <table class="std">
+            <thead>
+                <tr>
+                    <th>Quận</th>
+                    <th>Phí giao hàng / 1 lần giao</th>
+                    <th>Miễn phí cho đơn hàng từ / 1 lần giao</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var fees = GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.LoadShipmentFee();
+                    var culture = Model.Culture();
+                    foreach (var f in fees)
+                    {
+                        <tr>
+                            <td>@f.District</td>
+                            <td>@string.Format(culture, "{0:c0}", f.Fee)</td>
+                            <td>@string.Format(culture, "{0:c0}", f.FreeThreshold)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+}

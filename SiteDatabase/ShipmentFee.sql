@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[ShipmentFee]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[District] NVARCHAR(20) NOT NULL,
+	[Fee] DECIMAL NOT NULL DEFAULT 0,
+	[FreeThreshold] DECIMAL DEFAULT 0
+)

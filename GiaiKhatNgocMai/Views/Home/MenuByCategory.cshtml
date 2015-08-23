@@ -1,0 +1,66 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CategoryViewModel
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+        </div>
+        <!-- /Breadcrumb -->
+        <h1>
+            @Model.Category.CategoryName
+            <span class="category-product-count">
+                Hiển thị @Model.PagingInfo.Count trong số @Model.PagingInfo.TotalItems sản phẩm.
+            </span>
+        </h1>
+        <p class="cat_desc">@Model.Category.CategoryDesciption</p>
+
+        <div class="product_sort">
+            <ul class="product_view">
+                <li id="product_view_grid" class="current" title="Hiển thị dạng lưới"></li>
+                <li id="product_view_list" title="Hiển thị dạng danh sách"></li>
+            </ul>
+        </div>
+        <!-- /Sort products -->
+        <div id="product_list_grid" class="bordercolor box visible">
+            <ul>
+                @foreach (var i in Model.Category.Items.OrderBy(p => p.IsFeatured))
+                {
+                    <li class="ajax_block_product bordercolor">
+                        <a href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" class="product_img_link" title="">
+                            <img src="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, i.Image))" alt="@i.ItemName" />
+                        </a>
+                        <h3><a class="product_link" href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" title="">@i.ItemName</a></h3>
+                        <span class="price">@string.Format(Model.Culture(), "{0:c0}/", i.Price)<span>@i.Unit</span></span>
+                        <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_@i.Id" href="javascript:void();" title="Đặt hàng">Đặt hàng</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div id="product_list_list" class="box">
+            <ul class="bordercolor">
+                @foreach (var i in Model.Category.Items.OrderBy(p => p.IsFeatured))
+                {
+                    <li class="ajax_block_product bordercolor">
+                        <a href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" class="product_img_link" title="@i.ItemName">
+                            <img src="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, i.Image))" alt="@i.ItemName" />
+                        </a>
+                        <div class="center_block">
+                            <div class="product_flags">
+                                @if(i.IsFeatured){<span class="new">Bán chạy</span>} 
+                                @if(i.IsTopping){<span class="availability bordercolor">Topping</span>}
+                            </div>
+                            <h3><a class="product_link" href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" title="@i.ItemName">@i.ItemName</a></h3>
+                            <p class="product_desc"><a class="product_descr" href="javascript:void();" title="">@i.ItemDescription</a></p>
+                        </div>
+                        <div class="right_block">
+                            <span class="price">@string.Format(Model.Culture(), "{0:c0}/", i.Price)<span>@i.Unit</span></span>
+                                <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_@i.Id" href="" title="Bỏ vào giỏ hàng">Đặt hàng</a>
+                            <a class="button" href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" title="Xem chi tiết">Xem</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+

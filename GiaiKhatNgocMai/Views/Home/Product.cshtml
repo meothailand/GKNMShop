@@ -1,0 +1,169 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ProductViewModel
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+        </div>
+        <!-- /Breadcrumb -->
+        <div id="primary_block" class="clearfix">
+            <div id="pb-right-column">
+                <div id="image-block" class="bordercolor">
+                    <a href="@Href(string.Format("~/{0}/{1}", Model.PhotoPath, Model.Product.Image))" rel="other-views" title="@Model.Product.ItemName">
+                        <img src="@Href(string.Format("~/{0}/medium_{1}", Model.PhotoPath, Model.Product.Image))" title="@Model.Product.ItemName"
+                             alt="@Model.Product.ItemName" id="bigpic" height="304" width="304">
+                    </a>
+                </div>
+                <div id="views_block">
+                   @if (Model.Product.ItemPhotoes.Count > 0)
+                   {
+                    <a id="view_scroll_left" title="Other views" href="javascript:{}">Previous</a>
+                    <div id="thumbs_list">
+                        <ul style="" id="thumbs_list_frame">
+                            @{  var classId = "";
+                              var count = 1;
+                              foreach (var photo in Model.Product.ItemPhotoes)
+                              {
+                                  classId = count == Model.Product.ItemPhotoes.Count ? "thumb_last" : "";
+                                <li style="" class="@classId">
+                                    <a href="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, photo.PhotoFileName))" rel="other-views" class="thickbox bordercolor" title="@photo.PhotoDescription">
+                                        <img id="thumb_1" src="@Href(string.Format("~/{0}/medium_{1}", Model.PhotoPath, photo.PhotoFileName))" alt="@photo.PhotoDescription" height="80" width="80">
+                                    </a>
+                                </li>
+                                  count += 1;
+                              }}
+                        </ul>
+                    </div>
+                    <a id="view_scroll_right" title="Other views" href="javascript:{}">Next</a>
+                   }
+                </div>
+            </div>
+            <div id="pb-left-column">
+                <h1>@Model.Product.ItemName [@Model.Product.Unit]</h1>
+                <div id="buy_block" class="bordercolor">
+                    <p class="hidden">
+                        <input name="id_product" value="@Model.Product.Id" id="product_page_product_id" type="hidden">
+                    </p>
+                    <div class="price bordercolor">
+                        <span class="our_price_display">
+                            <span id="our_price_display" class="price">@string.Format(Model.Culture(), "{0:c0}/", Model.Product.Price)<span>@Model.Product.Unit</span></span>
+                        </span>
+                        <p id="add_to_cart">
+                            <a class="exclusive" href="javascript:void(0);">Đặt hàng</a>
+                        </p>
+                        <p id="quantity_wanted_p">
+                            <input name="qty" id="quantity_wanted" class="text" value="1" size="2" maxlength="3" type="text">
+                            <label>Số lượng:</label>
+                        </p>
+                    </div>
+                    <p id="minimal_quantity_wanted_p" class="bordercolor" style="display:none;">Bạn phải nhập ít nhất <b id="minimal_quantity_label">1</b> vào ô số lượng.</p>
+                    <div class="other_options bordercolor">
+                        <div id="attributes">
+                            <span class="on_sale">Hoặc gọi chúng tôi!</span>
+                            <div class="clearblock"></div>
+                        </div>
+                        <div class="clearblock"></div>
+                        <div id="tmspecials" class="home_block">
+                            <div class="block_content">
+                                <ul>
+                                    <li>
+                                        <div>
+                                            <img src="@Href("~/Content/images/hotline.jpg")" />
+                                        </div>
+                                        <div>
+                                            <strong>(+84) 0121 557 5358</strong><br />
+                                            <strong>(+84) 0128 625 6602</strong>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <a href="skype:live:ngocmai.vo?chat">
+                                                <img src="@Href("~/Content/images/skype.png")" />
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="skype:live:ngocmai.vo?chat"><strong>Giải khát Ngọc Mai Line chính</strong></a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <a href="skype:thanhngan990?chat">
+                                                <img src="@Href("~/Content/images/skype.png")" />
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="skype:thanhngan990?chat"><strong>Giải khát Ngọc Mai Line phụ</strong></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearblock"></div>
+                        </div>
+                    </div>
+                    <div id="short_description_block" class="bordercolor">
+                        <div id="short_description_content" class="rte align_justify">@Model.Product.ItemDescription</div>
+                    </div>
+                    <p id="oosHook" style="display: none;"></p>
+                    <div class="clearblock"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clearblock"></div>
+        <h4>Sản phẩm cùng loại có thể bạn quan tâm</h4>
+        <div id="product_list_grid" class="bordercolor box visible">
+            <ul>
+                @foreach (var i in Model.SameCateProducts)
+                {
+                    <li class="ajax_block_product bordercolor">
+                        <a href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" class="product_img_link" title="@i.ItemName - @i.Unit">
+                            <img src="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, i.Image))" alt="@i.ItemName" />
+                        </a>
+                        <h3><a class="product_link" href="/San-pham/@i.CategoryUrlName/@i.Id/@i.UrlName" title="@i.ItemName - @i.Unit">@i.ItemName</a></h3>
+                        <span class="price">@string.Format(Model.Culture(),"{0:c0}/", i.Price)<span>@i.Unit</span></span>
+                        <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_@i.Id" href="" title="Đặt hàng">Đặt hàng</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+@section pagescripts{
+    <script type="text/javascript" src="~/Content/plugins/jquery.fancybox/jquery.fancybox-1.3.4.js"></script>  
+    <script type="text/javascript" src="~/Content/plugins/jquery.serialScroll/jquery.scrollTo.min.js"></script> 
+    <script type="text/javascript" src="~/Content/plugins/jquery.serialScroll/jquery.serialScroll.min.js"></script>  
+    <script type="text/javascript">
+        $("a[rel=other-views]").fancybox({
+            "transitionIn": "none",
+            "transitionOut": "none"
+        });
+        (function () {
+            var container = $('#thumbs_list_frame');
+            var items = $('#thumbs_list_frame > li');
+            items.css('display', 'list-style');
+            container.width(items.length * 82);
+        })();
+        $('#views_block').serialScroll({
+            target: '#thumbs_list',
+            items: 'li', // Selector to the items ( relative to the matched elements, '#sections' in this case )
+            prev: 'a#view_scroll_left',// Selector to the 'prev' button (absolute!, meaning it's relative to the document)
+            next: 'a#view_scroll_right',// Selector to the 'next' button (absolute too)
+            axis: 'x',// The default is 'y' scroll on both ways
+            duration: 500,// Length of the animation (if you scroll 2 axes and use queue, then each axis take half this time)
+            force: true, // Force a scroll to the element specified by 'start' (some browsers don't reset on refreshes)
+
+            onBefore: function (e, elem, $pane, $items, pos) {
+                e.preventDefault();
+                if (this.blur) {
+                    this.blur();
+                }
+            },
+            onAfter: function (elem) {
+            }
+        });
+    </script>  
+}
+
+@section pagestyles{
+    <link href="~/Content/plugins/jquery.fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+}

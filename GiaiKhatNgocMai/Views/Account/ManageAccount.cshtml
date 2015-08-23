@@ -1,0 +1,151 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CustomerAccountViewModel
+
+@section content{
+<div id="center_column" class="center_column">
+    <div class="breadcrumb">
+        @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+    </div>
+    <!-- /Breadcrumb -->
+    <h1>
+        Chào bạn @Model.CustomerAccount.CustomerName
+        <span id="user_description">
+        </span>
+    </h1>
+    <div class="user_tab">
+        <ul class="user_view">
+            <li id="user_info" title="Quản lý thông tin tài khoản"></li>
+            <li id="user_security" title="Quản lý bảo mật tài khoản"></li>
+            <li id="user_order" title="Xem thông tin đơn hàng đã đặt"></li>
+        </ul>
+    </div>
+    <div class="error hidden">
+        <p></p>
+        <ol>
+            <li>If there is any error, show it here</li>
+        </ol>
+    </div>
+    <div id="message">
+        <p class="processing hidden">
+            <span>Đang load </span><img src="~/Content/images/facebook_style_loader.gif" />
+        </p>
+        <p class="info_success hidden">Thông tin đã được lưu</p>
+    </div>
+    <div id="user_view_user_info" class="bordercolor box">
+        <form action="" id="user_info_form" class="customer_account_form">
+            <fieldset>
+                <p class="text">
+                    <label for="customerPoint">Điểm tích luỹ khi mua hàng hiện tại</label>
+                    <input type="text" id="customerPoint" name="customerPoint" value="@Model.CustomerAccount.CustomerPoint điểm" readonly="readonly" disabled="disabled" />
+                </p>
+                <p class="text">
+                    <label for="customerEmail">Địa chỉ email</label>
+                    <input type="text" id="customerEmail" name="customerEmail" value="@Model.CustomerAccount.CustomerEmail" readonly="readonly" disabled="disabled" />
+                </p>
+                <p class="text">
+                    <label for="customerName">Tên khách hàng</label>
+                    <input type="text" id="customerName" name="customerName" value="@Model.CustomerAccount.CustomerName" class="required" /><span class="hidden error"></span>
+                    <input type="hidden" id="customerName_origin" name="customerName_origin" value="@Model.CustomerAccount.CustomerName" />
+                </p>
+                <p class="text">
+                    <label for="customerPhone">Số ĐT</label>
+                    <input type="text" id="customerPhone" name="customerPhone" value="@Model.CustomerAccount.CustomerPhone" class="required" /><span class="hidden error"></span>
+                    <input type="hidden" id="customerPhone_origin" name="customerPhone_origin" value="@Model.CustomerAccount.CustomerPhone" /><span class="hidden error"></span>
+                </p>
+                <p class="text">
+                    <label for="customerAddress">Địa chỉ</label>
+                    <input type="text" id="customerAddress" name="customerAddress" value="@Model.CustomerAccount.ShipAddress" class="required" />
+                    <select name="customerDistrict" id="customerDistrict" class="required">
+                        <option value="">---</option>
+                        @foreach (var i in Model.ShipmentFees)
+                        {
+                            <option value="@i.Id" @(i.District == Model.CustomerAccount.ShipDistrict ? "selected" : "")>@i.District</option>
+                        }
+                    </select>
+                    <input type="hidden" id="customerAddress_origin" name="customerAddress_origin" value="@Model.CustomerAccount.ShipAddress" />
+                    <input type="hidden" id="customerDistrict_origin" name="customerDistrict_origin" value="@Model.CustomerAccount.ShipDistrict" />
+                    <span class="hidden error"></span>
+                </p>
+                <p class="checkbox">                    
+                    <input type="checkbox" id="registerNews" name="registerNews" class="checkbox" @(Model.CustomerAccount.RecieveInfo ? "checked" : "") />
+                    <input type="hidden" id="registerNews_origin" name="registerNews_origin" value="@(Model.CustomerAccount.RecieveInfo ? 1 : 0)" />
+                    <label for="customerName">Nhận thông tin từ shop</label>
+                </p>
+                <p class="submit">
+                    <input class="button button_large" type="button" name="submit_info"  rel="#user_info_form" value="Lưu thay đổi" />
+                    <input class="button button_large" type="reset" name="reset_info" rel="#user_info_form" value="Reset" />
+                </p>
+            </fieldset>
+        </form>
+    </div>
+    <div id="user_view_user_security" class="bordercolor box">
+        <form action="" id="user_security_form" class="customer_account_form">
+            <fieldset>
+                <p class="text">
+                    <label for="currentPassword">Mật khẩu hiện tại</label>
+                    <input type="password" id="currentPassword" name="currentPassword" value="" class="required" /><span class="hidden error"></span>
+                </p>
+                <p class="text">
+                    <label for="newPassword">Mật khẩu mới</label>
+                    <input type="password" id="newPassword" name="newPassword" value="" class="required" /><span class="hidden error"></span>
+                </p>
+                <p class="text">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" value="" class="required" /><span class="hidden error"></span>
+                </p>
+                <p class="submit">
+                    <input class="button button_large" type="button" name="submit_key" rel="#user_security_form" value="Cập nhật" />
+                    <input class="button button_large" type="reset" name="reset_key" rel="#user_security_form" value="Reset" />
+                </p>
+            </fieldset>
+        </form>
+    </div>
+    <div id="user_view_user_order" class="bordercolor box">
+        <div id="orders_table">
+            <table class="std">
+                <thead>
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Giao hàng</th>
+                        <th>Giá trị đơn hàng</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("~/Views/Ajax/_CustomerOrderTablePartial.cshtml", Model.CustomerAccount.Orders)               
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Trang @Model.PagingInfo.Current - Hiển thị @Model.PagingInfo.Count trong số @Model.PagingInfo.TotalItems đơn hàng</td>
+                        <td>
+                            <img src="~/Content/images/back.png" title="Trang trước" class="page_navigation prev" id="@string.Format("page_{0}",Model.PagingInfo.Current)"
+                                 style="visibility: @(Model.PagingInfo.Current > 1 ? "visible" : "hidden");" />
+
+                            <img src="~/Content/images/next.png" title="Trang sau" class="page_navigation next" id="@string.Format("page_{0}", Model.PagingInfo.Current)"
+                                 style="visibility:@(Model.PagingInfo.Current < Model.PagingInfo.TotalPage ? "visible":"hidden");" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="order_details">
+            <p class="processing hidden">
+                <span>Đang load </span><img src="~/Content/images/facebook_style_loader.gif" />
+            </p>
+            <div class="error hidden">
+                <p></p>
+                <ol>
+                    <li>If there is any error, show it here</li>
+                </ol>
+            </div>
+            <div id="order_details" class="hidden">
+                
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@section pagescripts{
+    <script type="text/javascript" src="~/Scripts/customer.account.js"></script>
+}

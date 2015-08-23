@@ -1,0 +1,51 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+@{
+    var isErrorLogin = GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.GetCustomer().IsLoginError;
+}
+<h4>Chúng tôi sẽ liên hệ với bạn sớm nhất khi nhận được đơn hàng.</h4>
+<form action="/dat-hang/buoc/2/luu" method="post" id="create-account_form"
+      class="std authentication">
+    <fieldset class="@(isErrorLogin ? "toHidden" : "")">
+        <h3 class="required show-hide-form" rel="login_form">[CLICK >>>] cho khách hàng không tạo tài khoản</h3>
+        <p class="text">
+            <label for="customer_name" class="required">Tên khách hàng<sub>*</sub></label>
+            <input id="customer_name" name="customer_name" value="@Model.Cart.CustomerName" class="account_input required" type="text">
+        </p>
+        <p class="text">
+            <label for="customer_phone" class="required">Số điện thoại<sub>*</sub></label>
+            <input id="customer_phone" name="customer_phone" value="@Model.Cart.ContactNumber" class="account_input required" type="text">
+        </p>
+        <p class="text">
+            <label for="email_address">Email</label>
+            <input id="email_address" name="email_address" value="@Model.Cart.EmailAddress" class="account_input" type="text">
+        </p>
+        <p class="submit">
+            <input id="submit_button" name="submit_button" value="Tiếp tục" type="button" class="button">&nbsp;
+            <a href="/tai-khoan/tao-moi" class="button button_secondary" title="Click vào đây để tạo tài khoản">Tạo tài khoản?</a>
+        </p>
+        <p class="text">
+            <div>*** Cung cấp địa chỉ email, chúng tôi sẽ thông báo cho bạn biết các món mới của quán và các đợt khuyến mãi hấp dẫn.</div><br />
+            <div>*** Bạn có thể tắt chức năng nhận tin tức của chúng tôi bất cứ lúc nào chỉ với 1 cú click chuột.</div><br />
+            <div class="highlight_text">*** Tạo tài khoản để tham gia các chương trình khuyến mãi tích điểm của shop.</div>
+        </p>
+    </fieldset>
+</form>
+<form action="/dat-hang/buoc/2/dang-nhap" method="post" id="login_form"
+      class="std authentication">
+    <fieldset class="@(isErrorLogin ? "" : "toHidden")">
+        <h3 class="required show-hide-form" rel="create-account_form">[CLICK >>>] Cho khách hàng đã có tài khoản.</h3>
+        <p class="text">
+            <label for="customer_email" class="required">Email<sub>*</sub></label>
+            <input id="customer_email" name="customer_email" value="" class="account_input required" type="text">
+        </p>
+        <p class="text">
+            <label for="customer_password" class="required">Password<sub>*</sub></label>
+            <input id="customer_password" name="customer_password" value="" class="account_input required" type="password">
+        </p>
+        <p class="submit">
+            <input id="login_button" name="login_button" class="button_large" type="button" value="Đăng nhập" />
+        </p>
+    </fieldset>
+</form>
+<div class="clearblock"></div>
+

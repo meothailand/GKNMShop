@@ -1,0 +1,70 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.LoginViewModel
+
+@section content{
+<div id="center_column" class="center_column">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="breadcrumb_inner">
+            <a href="/" title="return to Home">Trang chủ</a><span class="navigation-pipe">&gt;</span><span class="navigation_page">Đăng nhập</span>
+        </div>
+    </div>
+    <!-- /Breadcrumb -->
+    <span></span>
+    <div class="@(Model.IsError ? "error":"error hidden")">
+        <p></p>
+        <ol id="error_list">
+            <li>@Model.Message</li>
+        </ol>
+    </div>
+    <form action="/khach-hang/dang-nhap" method="post" id="login_form" class="std authentication">
+        <fieldset>
+            @if (Model.IsAccountCreated)
+            {
+                <h3>@Model.Message</h3>
+            }
+            else
+            {
+                <h3>Nhập địa chỉ email và password để đăng nhập</h3>
+            }            
+            <p class="text">
+                <label for="customerEmail" class="">Email<sub>*</sub></label>
+                @Html.TextBoxFor(i => i.LoginEmail, new { @class = "account_input required", @title = "Địa chỉ email" })
+            </p>
+            <p class="text">
+                <label for="password" class="">Password<sub>*</sub></label>
+                @Html.PasswordFor(i => i.LoginPassword, new { @class = "account_input required", @title = "Password" })
+            </p>
+            <p class="submit">
+                <input id="submit_button" name="submit_button" value="Đăng nhập" type="submit" class="button" />&nbsp;&nbsp;
+                <a href="javascript:void(0);" id="reset_password_button">Quên mật khẩu?</a>&nbsp;&nbsp;
+                <a href="/khach-hang/dang-ky">Chưa có tài khoản?</a>
+            </p>
+        </fieldset>
+    </form>
+    <form action="" id="reset_password_form" class="std authentication hidden">
+        <fieldset>
+            <h3>Nhập địa chỉ email để nhận mật khẩu mới</h3>
+            <p class="text hidden" id="reset_message">
+                <span>Chúng tôi đã gửi mail đến địa chỉ {0}. Bạn kiểm tra mail để lấy lại mật khẩu.</span>
+            </p>
+            <p class="text processing hidden">
+                Đang xử lý, vui lòng chờ <img src="~/Content/images/facebook_style_loader.gif" />
+            </p>
+            <p class="text">
+                <label for="customerEmail" class="">Email<sub>*</sub></label>
+                <input type="text" id="customerEmail" name="customerEmail" class = "account_input required" title = "Địa chỉ email" />
+            </p>
+            <p class="submit">
+                <input id="submit_reset" name="submit_reset" value="Gửi password" type="button" class="button" />&nbsp;&nbsp;
+                <a href="javascript:void(0);" id="login_button">Đăng nhập?</a>
+            </p>
+        </fieldset>
+    </form>
+</div>
+
+}
+
+@section pagescripts{
+    <script type="text/javascript" src="~/Scripts/login.password.js">   
+    </script>
+}

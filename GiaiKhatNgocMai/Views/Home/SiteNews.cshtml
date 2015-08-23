@@ -1,0 +1,58 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ContactViewModel
+
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <div class="breadcrumb_inner">
+                @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+        <h1>Dịch vụ khách hàng - Liên hệ với chúng tôi</h1>
+        <span>
+        </span>
+        <div class="@(Model.IsError ? "error":"error hidden")">
+            <p></p>
+            <ol>
+                <li>@Model.Message</li>
+            </ol>
+        </div>
+        <form action="/prestashop_38171/contact-form.php" method="post" class="std" enctype="multipart/form-data">
+            <fieldset>
+                <h3>Gửi tin nhắn - Hoặc liên hệ trực tiếp qua Hotline</h3>
+                <p class="select">
+                    <label for="id_contact">Tiêu đề</label>
+                    <select id="id_contact" name="id_contact" onchange="showElemFromSelect('id_contact', 'desc_contact')">
+                        <option value="0">-- Chọn --</option>
+                        <option value="2">Thông tin về sản phẩm</option>
+                        <option value="1">Thắc mắc về đơn hàng</option>
+                    </select>
+                </p>
+                <p style="display: none;" id="desc_contact0" class="desc_contact">&nbsp;</p>
+                <p id="desc_contact2" class="desc_contact" style="display: none;">
+                    Câu hỏi về thông tin sản phẩm và dịch vụ
+                </p>
+                <p id="desc_contact1" class="desc_contact" style="">
+                    Câu hỏi hoặc khiếu nại về đơn hàng
+                </p>
+                <p class="text">
+                    <label for="email">E-mail address</label>
+                    <input id="email" name="from" value="" type="text">
+                </p>
+                <p class="text">
+                    <label for="id_order">Order ID</label>
+                    <input name="id_order" id="id_order" value="" type="text">
+                </p>
+                <p class="textarea">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="15" cols="20"></textarea>
+                </p>
+                <p class="submit">
+                    <input name="submitMessage" id="submitMessage" value="Send" class="button_large" type="submit">
+                </p>
+            </fieldset>
+        </form>
+    </div>
+
+}

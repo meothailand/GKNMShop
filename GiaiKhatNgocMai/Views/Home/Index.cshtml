@@ -1,0 +1,123 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.HomepageViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var banners = GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.LoadBanner();
+    var news = GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.LoadHotNews();
+}
+
+@section maincontent{
+<div id="center_column" class="center_column homepage">
+    <!-- MODULE Home Featured Products -->
+    <div id="featured_products">
+        <h4>Món uống được yêu thích</h4>
+        <div class="block_content">
+            <ul>
+                @foreach (var pr in Model.FeaturedProducts)
+                {
+                    <li class="ajax_block_product">
+                        <a class="product_image" href="/San-pham/@pr.CategoryUrlName/@pr.Id/@pr.UrlName" title="@pr.ItemName">
+                            <img src="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, pr.Image))" alt="@pr.ItemName" />
+                        </a>
+                        <div>
+                            <h5><a class="product_link" href="/San-pham/@pr.CategoryUrlName/@pr.Id/@pr.UrlName" title="@pr.ItemName">@pr.ItemName</a></h5>
+                            <span class="price">@string.Format(Model.Culture(), "{0:c0}/", pr.Price)<span>@pr.Unit</span></span>
+                            <a class="exclusive ajax_add_to_cart_button" rel="ajax_id_product_@pr.Id" href="javascript:void(0);" title="Bỏ vào giỏ hàng">Đặt mua</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <!-- /MODULE Home Featured Products -->
+</div>
+<div id="right_column" class="column">
+    @Html.Partial("~/Views/Shared/_HotlinePartial.cshtml")
+    <!-- MODULE TM hot news -->
+    <div id="tmbestsellers" class="block">
+        <h4>@Html.ActionLink("Tin quan tâm","News")</h4>
+        <div class="block_content">
+            <ul>
+                @if (news.Count > 0) { 
+                    foreach (var n in news)
+                    {
+                        <li>
+                            <a href="@string.Format("/tin-tuc/{0}/{1}", n.Id,n.UrlTitle)" title="@n.Title">
+                                <span>@string.Format(Model.Culture(),"{0:dd MMM yy}", n.DatePosted). </span>
+                                @n.Title
+                            </a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>Chưa có tin tức</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <!-- /MODULE TM best sellers -->
+</div>
+<div class="clearblock"></div>
+}
+
+@section banners{
+    <div id="tmnivoslider">
+        <div id="slider" style="position: relative; background-image: url(Content/images/slide01.jpg); background-position: initial initial; background-repeat: no-repeat no-repeat; " class="nivoSlider">
+            @foreach (var b in banners.Where(i => i.Type == GiaiKhatNgocMai.Settings.SiteSettings.MainBanner))
+            {
+                <a href="@b.BannerLink" class="nivo-imageLink">
+                    <img src="@b.BannerImage" alt="" title="@string.Format("#htmlcaption{0}",b.Id)" />
+                </a>
+            }
+        </div>
+        @foreach (var b in banners.Where(i => i.Type == GiaiKhatNgocMai.Settings.SiteSettings.MainBanner))
+        {
+            <div class="nivo-html-caption" id="@string.Format("htmlcaption{0}",b.Id)">
+                <h2>@b.Caption1</h2>
+                <h3>@b.Caption2</h3>
+                <p class="slide_descr1">@b.Caption3</p>
+                <p class="slide_descr2"></p>
+                <a href="@b.BannerLink" class="slide_btn">Gọi ngay!</a>
+            </div>
+        }
+        <!-- tmbannerblock -->
+        <div id="tmbannerblock">
+            @foreach (var b in banners.Where(i => i.Type == GiaiKhatNgocMai.Settings.SiteSettings.SubBanner))
+            {
+                <a class="banner1" href="@b.BannerLink">
+                    <img src="@b.BannerImage" alt="@b.Caption1" title="@b.Caption1" />
+                </a>
+            }
+        </div>
+        <div class="clearblock"></div>
+        <!-- /tmbannerblock -->
+    </div>
+}
+
+@section customscripts{
+    <script type="text/javascript">
+        $(window).load(function () {
+            $('#slider').nivoSlider({
+                effect: 'fade', //Specify sets like: 'fold,fade,sliceDown'
+                slices: 10,
+                animSpeed: 500, //Slide transition speed
+                pauseTime: 5000,
+                startSlide: 0, //Set starting Slide (0 index)
+                directionNav: false, //Next & Prev
+                directionNavHide: false, //Only show on hover
+                controlNav: true, //1,2,3...
+                controlNavThumbs: false, //Use thumbnails for Control Nav
+                controlNavThumbsFromRel: false, //Use image rel for thumbs
+                controlNavThumbsSearch: '.jpg', //Replace this with...
+                controlNavThumbsReplace: '_thumb.jpg', //...this in thumb Image src
+                keyboardNav: true, //Use left & right arrows
+                pauseOnHover: true, //Stop animation while hovering
+                manualAdvance: false, //Force manual transitions
+                captionOpacity: 1.0, //Universal caption opacity
+                beforeChange: function () { },
+                afterChange: function () { },
+                slideshowEnd: function () { } //Triggers after all slides have been shown
+            });
+        });
+    </script>
+}

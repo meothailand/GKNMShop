@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section optionalLeft{
+    @Html.Partial("~/Views/Shared/_HotlinePartial.cshtml")
+}
+
+@section maincontent{
+    @RenderSection("content")
+}
+
+@section customstyles{
+    @RenderSection("pagestyles", required:false)
+}
+
+@section customscripts{
+    @RenderSection("pagescripts", required: false)
+}

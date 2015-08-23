@@ -1,0 +1,101 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+
+@if (Model.Cart.OrderDetails.Count == 0)
+{
+    <p id="emptyCartWarning" class="warning">Giỏ hàng của bạn chưa có món nào.</p>
+}
+else
+{
+    <p style="display:none;" id="emptyCartWarning" class="warning">
+       Thông báo
+    </p>
+    <img style="display:none;" class="warning" src="~/Content/images/delete.gif" title="Click để đóng" />
+    <p id="summary_products_quantity_p">Bạn có <span id="summary_products_quantity">@Model.Cart.OrderDetails.Count</span> món hàng trong giỏ.</p>
+    <div id="order-detail-content" class="table_block">
+        <table id="cart_summary" class="std">
+            <thead>
+                <tr>
+                    <th class="cart_product first_item">Sản phẩm</th>
+                    <th class="cart_description item">Tên sản phẩm</th>
+                    <th class="cart_availability item">Topping</th>
+                    <th class="cart_ref item">Đơn vị</th>
+                    <th class="cart_unit item">Giá</th>
+                    <th class="cart_quantity item">Số lượng</th>
+                    <th class="cart_total last_item">Thành tiền</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr class="cart_total_price">
+                    <td colspan="6">Tổng đơn hàng:</td>
+                    <td class="price" id="total_product"><span class="price">@string.Format(Model.Culture(), "{0:c0}", Model.Cart.OrderDetails.Sum(i => i.Price * i.Quantity))</span></td>
+                </tr>
+                <tr class="cart_total_delivery">
+                    <td colspan="6">Phí giao hàng:</td>
+                    <td class="price" id="total_shipping">                        
+                        @if (Model.Cart.ShipmentFee == 0)
+                        {
+                            <span class="price">---</span>
+                        }
+                        else
+                        {
+                            <span class="price">@string.Format(Model.Culture(), "{0:c0}", Model.Cart.ShipmentFee)</span>
+                        }                                          
+                    </td>
+                </tr>
+                <tr class="cart_total_price">
+                    <td colspan="6">
+                        Tổng thành tiền:
+                    </td>
+                    <td class="price" id="total_price"><span class="price">@string.Format(Model.Culture(), "{0:c0}", Model.Cart.Total)</span></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                @foreach(var dt in Model.Cart.OrderDetails){
+                <tr id="product_@dt.ItemId" class="cart_item">
+                    <td class="cart_product">
+                        <a href="/san-pham/chi-tiet/@dt.Id/@dt.UrlName"><img src="@Href(string.Format("~/{0}/{1}", Model.ThumbPath, dt.ItemPhoto))" alt="@dt.ItemName" style="height:50px;"/></a>
+                    </td>
+                    <td class="cart_description">
+                        <h5><a class="product_link" href="/san-pham/chi-tiet/@dt.ItemId/@dt.UrlName">@dt.ItemName</a></h5>
+                    </td>
+                    <td class="cart_availability">
+                        <img src="@Href("~/Content/images/unavailable.png")" alt="thêm topping" />
+                    </td>
+                    <td class="cart_ref">@dt.Unit</td>
+                    <td class="cart_unit">
+                        <span class="price" id="product_price_1_0">
+                            @string.Format(Model.Culture(),"{0:c0}", dt.Price)
+                        </span>
+                    </td>
+                    <td class="cart_quantity">
+                        <div id="cart_quantity_button">
+                            <a rel="nofollow" class="cart_quantity_up" id="cart_quantity_up_@dt.ItemId" href="javascript:void(0);" title="Cập nhật"><img src="~/content/images/check.png" alt="Cập nhật"></a>
+                            <input class="cart_quantity_input text" size="2" value="@dt.Quantity" id="quantity_@dt.ItemId" type="text">
+                            <a class="cart_quantity_down" rel="nofollow" id="cart_quantity_delete_@dt.ItemId" href="javascript:void(0);" title="Bỏ khỏi giỏ hàng"><img src="~/Content/images/cross.png" alt="Bỏ khỏi giỏ hàng"></a>
+                        </div>
+                    </td>
+                    <td class="cart_total">
+                        <span class="price" id="total_product_price_@dt.ItemId">
+                            @string.Format(Model.Culture(),"{0:c0}", dt.Quantity*dt.Price)
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="cart_voucher" class="table_block">
+        <form id="order-note" action="/dat-hang/buoc/1/luu" method="post">
+            <fieldset class="bordercolor">
+                <h2>Ghi chú</h2>
+                <p class="text">
+                    <textarea id="orderNote" name="orderNote" cols="4" rows="2" maxlength="200">@Model.Cart.Note</textarea>
+                </p>
+            </fieldset>
+        </form>
+    </div>
+    <p class="cart_navigation">
+        <a href="javascript:$('#order-note').submit();" class="exclusive" title="Next">Tiếp »</a>
+        <a href="/" class="button_large" title="Continue shopping">« Xem thêm hàng</a>
+    </p>
+}

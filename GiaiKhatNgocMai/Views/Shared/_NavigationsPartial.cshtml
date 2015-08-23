@@ -1,0 +1,17 @@
+﻿@model Dictionary<string, string>
+<div class="breadcrumb_inner">
+    @{  var count = Model.Count;
+      foreach (var nav in Model)
+      {
+          if (count == 1)
+          {
+            <span class="navigation_page">@nav.Key</span>
+              break;
+          }
+        <a href="@nav.Value" title="return to @nav.Key">@nav.Key</a>
+        <span class="navigation-pipe">&gt;</span>
+          count -= 1;
+      }
+    }
+</div>
+

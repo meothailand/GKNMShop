@@ -1,0 +1,30 @@
+﻿@model IEnumerable<GiaiKhatNgocMai.Models.LogicModel.OrderModel>
+
+@{ var culture = GiaiKhatNgocMai.Settings.SiteSettings.GetCulture; }
+
+@if (Model.Count() == 0)
+{
+    <tr class="no_order">
+        <td colspan="5">Bạn chưa có đơn hàng nào. <a href="/">Click</a> để đặt hàng.</td>
+    </tr>
+}
+else
+{
+    <tr class="hidden" style="background-color:#F9F9F9;">
+        <td colspan="5">
+            <p class="processing">
+                <span>Đang load </span><img src="~/Content/images/facebook_style_loader.gif" />
+            </p>
+        </td>
+    </tr>
+    foreach (var o in Model)
+    {
+        <tr>
+            <td><a href="javascript:void(0);" class="ajax_order_link" rel="@o.OrderNumber" id="@string.Format("order_no_{0}",o.Id)">#@o.OrderNumber</a></td>
+            <td>@string.Format(culture, "{0:dd MMMM yyyy}", o.OrderedDate)</td>
+            <td>@if(o.Delivery){ <img src="~/Content/images/check.png" /> }</td>
+            <td style="text-align:right;">@string.Format(culture, "{0:c0}", o.Total)</td>
+            <td>@o.StatusText</td>
+        </tr>
+    }
+}

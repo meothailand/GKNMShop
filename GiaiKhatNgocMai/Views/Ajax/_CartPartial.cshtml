@@ -1,0 +1,40 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ViewModelBase
+
+
+<!-- block summary -->
+<div id="cart_block_summary" class="expanded">
+    @if (Model.Cart.OrderDetails.Count > 0)
+    {
+        <span class="ajax_cart_product_txt">
+            Có @Model.Cart.OrderDetails.Sum(i => i.Quantity) sản phẩm trong giỏ hàng
+        </span><hr/>
+        foreach (var i in Model.Cart.OrderDetails)
+        {
+            <span>@i.ItemName &nbsp;(@i.Quantity) &nbsp; @string.Format(Model.Culture(),"{0:c0}", i.Quantity*i.Price)</span><hr/>
+        }
+    }
+    else
+    {
+        <span class="ajax_cart_product_txt">(trống)</span>
+    }
+</div>
+<!-- block list of products -->
+<div id="cart_block_list" class="expanded">
+    <div class="cart-prices">
+        <div class="cart-prices-block">
+            <span>Shipping</span>
+            <span id="cart_block_shipping_cost" class="price ajax_cart_shipping_cost" style="@(Model.Cart.Delivery && Model.Cart.Total >= Model.Cart.FeeThreshold ? "text-decoration:line-through;" : "")">
+                @string.Format(Model.Culture(), "{0:c0}", Model.Cart.ShipmentFee)
+            </span>
+        </div>
+        <div class="cart-prices-block">
+            <span>Tổng cộng</span>
+            <span id="cart_block_total" class="price ajax_block_cart_total">@string.Format(Model.Culture(), "{0:c0}", Model.Cart.Total)</span>
+        </div>
+    </div>
+    <p id="cart-buttons">
+        <a href="/dat-hang/buoc/1" class="button_mini" title="Xem giỏ hàng">Xem</a><br>
+        <a href="/dat-hang/buoc/2" class="button_small" title="Thanh toán">Thanh toán</a>
+    </p>
+</div>
+

@@ -1,0 +1,81 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.CheckoutViewModel
+
+@section content{
+    <div id="center_column" class="center_column">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <div class="breadcrumb_inner">
+                @Html.Partial("~/Views/Shared/_NavigationsPartial.cshtml", Model.Navigations)
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+        <h1 id="cart_title">@Model.StepTitle</h1>
+        
+        <ul id="order_steps" class="@string.Format("step{0}", Model.CurrentStep)">
+            @if (Model.CurrentStep == Model.Steps.Length)
+            {
+                foreach (var s in Model.Steps)
+                {
+                        <li class="step_done"><a href="javascript:void(0);">@s.DisplayText</a></li>
+                }
+            }
+            else
+            {
+                foreach (var s in Model.Steps)
+                {
+                    if (s.Step < Model.CurrentStep)
+                    {
+                        <li class="step_done">
+                            <a href="@((GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.GetCustomer().IsLoggedIn && s.Step == 2) ?
+                                        "javascript:void(0);": s.Url)">@s.DisplayText</a>
+                        </li>
+                    }
+                    if (s.Step == Model.CurrentStep)
+                    {
+                        <li id="@(s.Step == 5 ? "step_end" : "")" class="step_current"><span>@s.DisplayText</span></li>
+                    }
+                    if (s.Step > Model.CurrentStep)
+                    {
+                        if (s.Step <= Model.LastestStep && s.Step < Model.Steps.Count())
+                        {
+                            <li class="step_done"><a href="@s.Url">@s.DisplayText</a></li> }
+                        else
+                        {
+                            <li id="@(s.Step == 5 ? "step_end" : "")" class="step_todo"><span>@s.DisplayText</span></li>
+                        }
+
+                    }
+                }
+            }            
+        </ul>
+        <span>
+        </span>
+        <div class="@(Model.IsError ? "error":"error hidden")">
+            <p></p>
+            <ol>
+                <li>@Model.Message</li>
+            </ol>
+        </div>
+        @Html.Partial(string.Format("_CheckoutStep{0}", Model.CurrentStep))
+
+    </div>
+}
+
+@section pagescripts{
+    @switch (Model.CurrentStep)
+    {
+        case 2:
+            <script type="text/javascript" src="~/Scripts/checkout.form.js"></script>
+            break;
+        case 3: 
+            <script type="text/javascript" src="~/Scripts/checkout.delivery.js"></script>
+            <script type="text/javascript" src="@Href("~/Scripts/datepicker-vi.js")"></script>
+            <script type="text/javascript">
+                $('#delivery_form input#shipment_dateshow').datepicker({ minDate: 0, maxDate: '10D', dateFormat: 'd MM yy', altField: "#shipment_date", altFormat:'yy/mm/dd' });
+                $('#nondelivery_form input#shipment_date1show').datepicker({ minDate: 0, maxDate: '10D', dateFormat: 'd MM yy', altField: '#shipment_date1', altFormat: 'yy/mm/dd'});
+                $.datepicker.regional["vi"];
+            </script>
+            break;
+        default: break;
+    }
+}

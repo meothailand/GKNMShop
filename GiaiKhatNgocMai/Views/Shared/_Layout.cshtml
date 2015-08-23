@@ -1,0 +1,225 @@
+﻿@model GiaiKhatNgocMai.Models.ViewModel.ViewModelBase
+@{
+    var @class_id = "";
+    var count = 1;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0053)http://livedemo00.template-help.com/prestashop_38171/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>Giải khát Ngọc Mai</title>
+    <meta name="description" content="Giải khát Ngọc Mai giao hàng tận nơi">
+    <meta name="keywords" content="shop, drinks, delivery, online, giải khát, nước ép trái cây, trà sữa, giao hàng">
+    <meta name="generator" content="MVC">
+    <meta name="robots" content="index,follow">
+    <link rel="stylesheet" href="@Href("~/Content/css/css")" type="text/css" />
+    <link rel="stylesheet" href="@Href("~/Content/css/css(1)")" type="text/css" />
+    <link rel="icon" type="image/vnd.microsoft.icon" href="@Href("~/Content/images/favicon.png")">
+    @Styles.RenderFormat(GiaiKhatNgocMai.BundleFormat.StyleFormat, "~/Content/css")
+    @Styles.RenderFormat(GiaiKhatNgocMai.BundleFormat.StyleFormat, "~/Content/themes/base/css")
+    <link rel="shortcut icon" type="image/x-icon" href="@Href("~/Content/images/favicon.png")" />
+    @RenderSection("customstyles", required:false)
+</head>
+<body id="index">
+    <!--[if lt IE 8]><div style='clear:both;height:59px;padding:0 15px 0 15px;position:relative;z-index:10000;text-align:center;'><a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div><![endif]-->
+    <div id="wrapper1">
+        <div id="wrapper2">
+            <div id="wrapper3">
+                <!-- Header -->
+                <div id="header">
+                    <a id="header_logo" href="/" title="Giải khát Ngọc Mai">
+                        <img class="logo" src="@Href("~/Content/images/logo.jpg")" alt="Giải khát Ngọc Mai">
+                    </a>
+                    <div id="header_right">
+                        <div id="search_block_top">
+                            <form method="get" action="" id="searchbox">
+                                <input class="search_query" type="text" id="search_query_top" name="search_query">
+                                <a href="javascript:document.getElementById('searchbox').submit();">Tìm kiếm</a>
+                                <input type="hidden" name="orderby" value="position">
+                                <input type="hidden" name="orderway" value="desc">
+                            </form>
+                        </div>
+                        <!-- /Block search module TOP -->
+                        <ul id="tmheaderlinks">
+                            @foreach (var link in Model.SiteLinks.Links)
+                            {
+                                <li><a href="@link.Link" class="@(link.IsCurrent ? "active" : "")">@link.LinkText</a></li>
+                            }
+                            @*<li><a href="http://www.giaikhatngocmai.com" class="active">trang chủ</a></li>
+                            <li><a href="/huong-dan">hướng dẫn mua hàng</a></li>
+                            <li><a href="/chinh-sach">chính sách giao hàng</a></li>
+                            <li><a href="/tin-tuc">tin tức</a></li>
+                            <li><a href="/lien-he">liên hệ</a></li>*@
+                        </ul><!-- Block user information module HEADER -->
+                        <div id="header_user">                            
+                            <ul>
+                                @{
+                                    var cus = GiaiKhatNgocMai.Infrastructure.Utils.CacheHelper._CacheHelper.GetCustomer();
+                                    if (cus.IsLoggedIn)
+                                    {
+                                        <li id="header_user_info">
+                                            Chào mừng @cus.CustomerName
+                                        </li>
+                                        <li id="your_account"><a href="/khach-hang/tai-khoan" title="Tài khoản của bạn">Tài khoản của bạn</a></li>
+                                        <li id="your_account"><a href="/khach-hang/dang-xuat" title="Đăng xuất">Đăng xuất</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li id="header_user_info">
+                                            Chào mừng,
+                                            (&nbsp;<a href="/khach-hang/dang-nhap">Đăng nhập</a>&nbsp;)
+                                        </li>
+                                        <li id="your_account">
+                                            <a href="/khach-hang/dang-ky" title="Chưa có tài khoản - Click để tạo">Tạo tài khoản</a>
+                                        </li>
+                                    }
+                                 }
+                                <li id="shopping_cart">
+                                    <a href="/dat-hang/buoc/1" title="Your Shopping Cart">Giỏ hàng:</a>
+                                    @if (Model.Cart.OrderDetails.Count > 0)
+                                    {
+                                        <span class="ajax_cart_no_product">                                       
+                                            @Model.Cart.OrderDetails.Sum(i => i.Quantity) sản phẩm
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ajax_cart_no_product"> (trống) </span>
+                                    }
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="tmcategories">
+                            <ul id="cat" class="sf-menu sf-js-enabled">                                    
+                                @{  var class_selected = "";
+                                    foreach (var cate in Model.Categories)
+                                    {
+                                        class_id = count == Model.Categories.Count() ? "last" : "";
+                                        class_selected = cate.Id == Model.CurrentCateId ? "selected" : "";
+                                        <li class="@class_id">
+                                            <a class="@class_selected" href="/San-pham/@cate.Id/@cate.UrlName">@cate.CategoryName</a>
+                                        </li>
+                                        count +=1;
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <!-- /TM Categories -->                        
+                        @RenderSection("banners", required: false)
+                    </div>
+                    <div id="columns">
+                        <!-- Left -->
+                        <div id="left_column" class="column">
+                            <!-- Block category module -->
+                            <div id="manufacturers_block_left" class="block blockmanufacturer">
+                                <h4><a href="javascript:void();" title="Manufacturers">Danh mục sản phẩm</a></h4>
+                                <div class="block_content">
+                                    <ul class="bullet">
+                                        @{
+                                            class_id = "first_item";
+                                            count = 1;
+                                            foreach(var c in Model.Categories)
+                                            {
+                                                class_selected = c.Id == Model.CurrentCateId ? "selected" : "";
+                                                <li class="@class_id">
+                                                    <a class="@class_selected" href="/San-pham/@c.Id/@c.UrlName" title="@c.CategoryName">@c.CategoryName</a>
+                                                </li>
+                                                count += 1;
+                                                class_id = count == Model.Categories.Count() ? "last_item" : "";                                                
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- /Block category module -->
+                            <!-- MODULE Block cart -->
+                            <div id="cart_block" class="block exclusive">
+                                <h4>
+                                    <a href="javascript:void();">Giỏ hàng</a>
+                                    <span id="block_cart_expand" class="hidden">&nbsp;</span>
+                                    <span id="block_cart_collapse">&nbsp;</span>
+                                </h4>
+                                
+                                <div class="block_content" id="block_content">
+                                   @Html.Partial("~/Views/Ajax/_CartPartial.cshtml", Model)
+                                </div>
+                            </div>
+                            <!-- /MODULE Block cart -->
+                            <!--MODULE optional-->
+                            @RenderSection("optionalLeft", required:false)
+                            <!--/MODULE optional-->
+                        </div>
+                        @RenderSection("maincontent", required: true)
+                        <!-- Center -->
+                        <!-- Right -->
+                        <!--Hotline here-->
+                    </div>
+                </div>
+                <!-- Footer -->
+                <div id="footer_wrapper">
+                    <div id="footer">
+                        <div id="tmfooterlinks">
+                            <div>
+                                <h4>Information</h4>
+                                <ul>
+                                    @foreach (var link in Model.SiteLinks.Links)
+                                    {
+                                        <li><a href="@link.Link">@link.LinkText</a></li>
+                                    }
+                                    @*<li><a href="/lien-he">Liên hệ</a></li>
+                                    <li><a href="/huong-dan">Hướng dẫn mua hàng</a></li>
+                                    <li><a href="/chinh-sach">Chính sách giao hàng</a></li>
+                                    <li><a href="/gioi-thieu">Giới thiệu Giải khát Ngọc Mai</a></li>*@
+                                </ul>
+                            </div>       
+                            <div></div> 
+                            <div></div>
+                            <p>© 2015 Powered by Giải khát Ngọc Mai. All rights reserved</p>                 
+                        </div>
+
+                        <!-- tmbannerblock2 -->
+                        <div id="tmbannerblock2">
+                            <div class="inner">
+                                <a class="banner1" href="https://www.facebook.com/giaikhatngocmai" target="_blank">
+                                    <img src="@Href("~/Content/images/facebook.jpg")" alt="facebook" title="facebook" />
+                                </a>
+                                <a class="banner2" href="https://plus.google.com/" target="_blank">
+                                    <img src="@Href("~/Content/images/googleplus.jpg")" alt="google plus" title="google plus" />
+                                </a>
+                                <a class="banner3" href="http://www.foody.vn/ho-chi-minh/giai-khat-ngoc-mai-duong-43" target="_blank">
+                                    <img src="@Href("~/Content/images/foody.jpg")" alt="foody" title="foody.vn" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="clearblock"></div>
+                        <!-- /tmbannerblock2 --><!-- TMTextblock -->
+                        <div id="tmtextblock">
+                            <span class="txt1">Địa chỉ cửa hàng:</span>
+                            <span class="txt2">Số 11 Đường số 43 Phường 4, Quận 4, TP. HCM</span>                            
+                        </div>
+                        <!-- /TMTextblock -->
+                        <!-- [[%FOOTER_LINK]] -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+    <script type="text/javascript">
+        var appBaseUrl = window.location.protocol + "//" + window.location.host + "@Request.ApplicationPath";
+    </script>
+    @Scripts.Render("~/bundles/frontendjs")
+    <script type="text/javascript">
+        $(window).load(function () {
+            preloadImages(["/Content/images/button-hover.jpg"]);
+        });
+    </script>
+
+        @RenderSection("customscripts", required:false)
+        <script type="text/javascript" src="@Href("~/Content/js/ga(1).js")"></script>
+</body>
+</html>
