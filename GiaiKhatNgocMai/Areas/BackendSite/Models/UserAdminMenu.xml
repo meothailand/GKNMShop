@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<!--Admin menu-->
+<MenuLink>
+  <FirstLevel MenuText="Dashboard" Link="dashboard" IsActive="true">
+  </FirstLevel>
+  <FirstLevel MenuText="Site Settings" Link="sitesettings" IsActive="false">
+    <SubLevel MenuText="Banners" Link="banners" IsActive="false"></SubLevel>
+    <SubLevel MenuText="New Banner" Link="newbanner" IsActive="false"></SubLevel>
+    <SubLevel MenuText="News" Link="news" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Post News" Link="postnews" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Shipment Fee" Link="shipmentfee" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Units" Link="units" IsActive="false"></SubLevel>
+  </FirstLevel>
+  <FirstLevel MenuText="Accounts" Link="accounts" IsActive="false">
+    <SubLevel MenuText="User Accounts" Link="useraccounts" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Customer Accounts" Link="customeraccounts" IsActive="false"></SubLevel>
+    <SubLevel MenuText="New User Account" Link="newaccount" IsActive="false"></SubLevel>
+  </FirstLevel>
+  <FirstLevel MenuText="Products" Link="products" IsActive="false">
+    <SubLevel MenuText="Categories" Link="categories" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Products" Link="manageproducts" IsActive="false"></SubLevel>
+    <SubLevel MenuText="New Product" Link="newproduct" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Product's Photoes" Link="productsphotoes" IsActive="false"></SubLevel>
+  </FirstLevel>
+  <FirstLevel MenuText="Orders" Link="orders" IsActive="false">
+    <SubLevel MenuText="Orders" Link="manageorders" IsActive="false"></SubLevel>
+    <SubLevel MenuText="New Order" Link="neworder" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Your Orders" Link="userorders" IsActive="false"></SubLevel>
+  </FirstLevel>
+  <FirstLevel MenuText="Accounting" Link="accounting" IsActive="false">
+    <SubLevel MenuText="Expenditure" Link="expenditure" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Receipts" Link="receipts" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Expenditure Record" Link="recordexpenditure" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Monthly Balance Report" Link="reportbalance" IsActive="false"></SubLevel>
+  </FirstLevel>
+</MenuLink>

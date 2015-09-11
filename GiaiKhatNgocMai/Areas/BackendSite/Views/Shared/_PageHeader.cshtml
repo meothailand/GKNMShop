@@ -1,0 +1,38 @@
+﻿@model GiaiKhatNgocMai.Areas.BackendSite.Models.PageHeaderViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            @Model.PageTitle <small>@Model.PageDescription</small>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            @{  var count = 1;
+              foreach (var i in Model.PageNavigation)
+              {
+                  <li>
+                      @if (count == 1) {<i class="fa fa-home"></i>}
+                      @if (count == Model.PageNavigation.Count)
+                      {
+                        <a href="javascript:void(0);">@i.Key</a>
+                      }
+                      else
+                      {
+                        <a href="@i.Value">@i.Key</a>
+                        <i class="fa fa-angle-right"></i>
+                      }
+                  </li>
+                  
+                  count += 1;
+              }
+            }
+            <li class="pull-right">
+                <div class="dashboard-date-range" style="display:block;" data-placement="top">
+                    <i class="fa fa-calendar"></i>
+                    <span>@Model.PageCalendar</span>
+                </div>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>

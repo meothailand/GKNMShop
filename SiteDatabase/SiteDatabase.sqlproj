@@ -71,6 +71,7 @@
     <Build Include="Customer.sql" />
     <Build Include="Banner.sql" />
     <Build Include="ItemPhoto.sql" />
+    <Build Include="Expense.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.FeedData.sql" />

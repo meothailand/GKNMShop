@@ -15,7 +15,8 @@
 	[ShipmentFee] Decimal NOT NULL Default 0,
 	[Total] Decimal NOT NULL Default 0,
 	[Note] NVARCHAR(100),
-	[Status] bit DEFAULT 0
+	[Status] bit DEFAULT 0,
+	[CommissionPaid] bit NOT NULL DEFAULT 0,
 )
 GO
 CREATE TRIGGER [dbo].[Insert_Order_Trigger] ON [dbo].[Order]

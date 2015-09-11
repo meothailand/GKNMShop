@@ -16,4 +16,18 @@ namespace GiaiKhatNgocMai.Infrastructure.Exceptions
 
         }
     }
+
+    public class InvalidRoleTypeException : Exception
+    {
+        public InvalidRoleTypeException()
+            : base("This role type does not exist.")
+        {
+        }
+
+        public InvalidRoleTypeException(string msg)
+            : base(msg)
+        {
+
+        }
+    }
 }

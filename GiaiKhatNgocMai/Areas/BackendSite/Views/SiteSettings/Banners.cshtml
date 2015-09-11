@@ -1,0 +1,113 @@
+﻿@model GiaiKhatNgocMai.Areas.BackendSite.Models.BannerViewModel
+
+@section content{
+    <div class="row" id="orders_table">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-coffee"></i>Top Banners
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Order No.
+                                </th>
+                                <th>
+                                    Customer Name
+                                </th>
+                                <th>
+                                    Customer Phone
+                                </th>
+                                <th>
+                                    Ordered Date
+                                </th>
+                                <th>
+                                    Delivery Date
+                                </th>
+                                <th>
+                                    Delivery Address
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Banners.Count(i => i.Type == "") > 0)
+                            {
+                                foreach (var o in Model.Banners.Where(i => i.Type == ""))
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="" style="width:100px;" />
+                                        </td>
+                                        <td>
+                                            @o.BannerLink
+                                        </td>
+                                        <td>
+                                            @o.ContactNumber
+                                        </td>
+                                        <td>
+                                            @string.Format("{0: dd, MMM, yy}", o.OrderedDate)
+                                        </td>
+                                        <td>
+                                            @string.Format("{0: dd, MMM, yy - hh:mm}", o.ShipmentDate)
+                                        </td>
+                                        <td>
+                                            @(o.Delivery ? string.Format("{0}, {1}", o.ShipmentAddress, o.ShipmentDistrict) : "")
+                                        </td>
+                                        <td>
+                                            @string.Format(culture, "{0:c0}", o.Total)
+                                        </td>
+                                        <td>
+                                            @if (o.Status.HasValue)
+                                            {
+                                                if (o.Status.Value)
+                                                {
+                                                    <span class="label label-sm label-success">
+                                                        Completed
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-sm label-info">
+                                                        Confirmed - Waiting
+                                                    </span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-sm label-warning">
+                                                    Need Action
+                                                </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8">There is no order to show.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

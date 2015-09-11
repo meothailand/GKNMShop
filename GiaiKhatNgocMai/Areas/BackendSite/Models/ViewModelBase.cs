@@ -8,6 +8,10 @@ namespace GiaiKhatNgocMai.Areas.BackendSite.Models
 {
     public class ViewModelBase
     {
-        public UserModel User { get; private set; }
+        public PageHeaderViewModel HeaderModel { get; set; }
+        public ViewModelBase()
+        {
+            HeaderModel = new PageHeaderViewModel();
+        }
     }
 }

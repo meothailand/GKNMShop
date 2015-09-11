@@ -1,0 +1,42 @@
+﻿@model IEnumerable<GiaiKhatNgocMai.Models.MenuLinkContainer>
+<div class="page-sidebar navbar-collapse collapse">
+    <!-- BEGIN SIDEBAR MENU -->
+    <ul class="page-sidebar-menu">
+        <li class="sidebar-toggler-wrapper">
+            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            <div class="sidebar-toggler hidden-phone">
+            </div>
+            <!-- END SIDEBAR TOGGLER BUTTON -->
+        </li>
+        @foreach (var item in Model)
+        {
+            <li class="@(item.Menu.IsCurrent ? "active open" : "")">
+                <a href="@(item.Links.Count == 0 ? string.Format("/backendsite/{0}", item.Menu.Link) : "javascript:void();")">
+                    <i class="fa fa-bookmark-o"></i>
+                    <span class="title">
+                        @item.Menu.LinkText
+                    </span>
+                    <span class="@(item.Menu.IsCurrent ? "selected" : "")"></span>
+                    <span class="@(item.Links.Count > 0 ? "arrow" : "")"></span>
+                </a>
+                @if (item.Links.Count > 0)
+                {
+                    <ul class="sub-menu">
+                        @foreach (var sub in item.Links)
+                        {
+                            <li class="@(sub.IsCurrent ? "active":"")">
+                                <a href="@string.Format("/backendsite/{0}/{1}", item.Menu.Link, sub.Link)">
+                                    <i class="fa fa-cogs"></i>
+                                    <span class="title">
+                                        @sub.LinkText
+                                    </span>
+                                </a>
+                            </li>
+                        }                        
+                    </ul>
+                }
+            </li>
+        }
+       <!-- END SIDEBAR MENU -->
+    </ul>
+</div>

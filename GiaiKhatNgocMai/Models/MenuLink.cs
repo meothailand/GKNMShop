@@ -8,8 +8,10 @@ namespace GiaiKhatNgocMai.Models
     public class MenuLinkContainer
     {
         public List<MenuLink> Links { get; set; }
+        public MenuLink Menu;
         public MenuLinkContainer()
         {
+            Menu = new MenuLink();
             Links = new List<MenuLink>();
         }
 
@@ -21,6 +23,32 @@ namespace GiaiKhatNgocMai.Models
             {
                 link.IsCurrent = true;
             }
+        }
+
+        public void SetCurrentLinkByLink(string link)
+        {
+            var menuLink = Links.SingleOrDefault(i => i.Link == link);
+            foreach (var item in Links)
+            {
+                item.IsCurrent = false;
+            }
+            if (menuLink != null)
+            {
+                menuLink.IsCurrent = true;
+            }
+        }
+
+        public bool ClearCurrentStatus()
+        {
+            Menu.IsCurrent = false;
+            if (Links.Exists(i => i.IsCurrent == true))
+            {
+                foreach (var link in Links)
+                {
+                    link.IsCurrent = false;
+                }
+            }
+            return true;
         }
     }
 

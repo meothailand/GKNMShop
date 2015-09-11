@@ -26,15 +26,6 @@ namespace GiaiKhatNgocMai.Infrastructure.Security
                 return true;
             }
             return false;
-            //if (HttpContext.Current.Request.Headers.AllKeys.Contains(SiteSettings.TokenKey))
-            //{
-            //    //var keys = HttpContext.Current.Request.Headers.AllKeys;
-            //    //var index = Array.IndexOf(keys, SiteSettings.TokenKey);
-            //    //var content = HttpContext.Current.Request.Headers.GetValues(index);
-            //    //validate token here
-            //    //check role here
-            //    return true;
-            //}            
         }
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {

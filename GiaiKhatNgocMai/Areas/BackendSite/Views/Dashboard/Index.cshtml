@@ -1,0 +1,100 @@
+﻿@model GiaiKhatNgocMai.Areas.BackendSite.Models.DashboardViewModel
+
+
+@section content{
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number" rel="new_orders">
+                    @Model.MonthOrders.Count(i => i.Status == null)
+                </div>
+                <div class="desc">
+                    To Confirmed Orders
+                </div>
+            </div>
+            <a class="more" href="javascript:void(0);" rel="new_orders" data-color="blue">
+                View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number" rel="today_delivery_orders">
+                    @Model.MonthOrders.Count(i => i.ShipmentDate >= DateTime.Today 
+                                                  && i.ShipmentDate < DateTime.Today.AddDays(1))
+                </div>
+                <div class="desc">
+                    Today Delivery Orders
+                </div>
+            </div>
+            <a class="more" href="javascript:void(0);" rel="today_delivery_orders" data-color="green">
+                View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat yellow">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number" rel="upcoming_orders">
+                    @Model.MonthOrders.Count(i => i.ShipmentDate >= DateTime.Today.AddDays(1))
+                </div>
+                <div class="desc">
+                    Upcoming Orders
+                </div>
+            </div>
+            <a class="more" href="javascript:void(0);" rel="upcoming_orders" data-color="yellow">
+                View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number" rel="total_orders">
+                    @Model.MonthOrders.Count
+                </div>
+                <div class="desc">
+                    Month Total Orders
+                </div>
+            </div>
+            <a class="more" href="/backendsite/manageorders" rel="total_orders">
+                View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+</div>  
+<div class="clearfix"></div>
+<div class="row hidden" id="ajax_loading_error">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> Can not load data.
+        </div>
+    </div>
+</div>
+<div class="row hidden" id="ajax_loading">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div style="width:50px; margin:20px auto;">
+            <img src="~/Content/images/ajax-loading.gif" />
+        </div>
+    </div>
+</div>
+}
+
+@section customscripts{
+    <script type="text/javascript" src="~/Scripts/backend_dashboard.js"></script>
+}

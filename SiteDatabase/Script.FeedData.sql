@@ -55,10 +55,13 @@ Post-Deployment Script Template
 DELETE [Order]
 DBCC CHECKIDENT([Order], RESEED, 0);
 
+DELETE [Expense]
+DBCC CHECKIDENT([Expense], RESEED,0);
+
 DELETE [User];
 DBCC CHECKIDENT([User], RESEED, 0);
 INSERT INTO [User] ([Email], [IsActive], [Password], [Role], [UserName])
-VALUES ('ngocmai.vo@hotmail.com', 1, 'maivop@ss', 'Admin', 'maivo');
+VALUES ('ngocmai.vo@hotmail.com', 1, 'maivop@ss', 'Admin', N'Mai Võ');
 
 DELETE [Category];
 DBCC CHECKIDENT([Category], RESEED, 0);

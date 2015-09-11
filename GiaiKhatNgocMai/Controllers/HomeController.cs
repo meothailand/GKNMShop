@@ -1,6 +1,7 @@
 ﻿using GiaiKhatNgocMai.Infrastructure.Exceptions;
 using GiaiKhatNgocMai.Infrastructure.Security;
 using GiaiKhatNgocMai.Infrastructure.Utils;
+using GiaiKhatNgocMai.Models.LogicModel;
 using GiaiKhatNgocMai.Models.ViewModel;
 using GiaiKhatNgocMai.Settings;
 using System;
@@ -198,11 +199,15 @@ namespace GiaiKhatNgocMai.Controllers
             var model = new NewsViewModel();
             if (id.HasValue)
             {
-                 
+                var news = Context.GetNews(id.Value);
+                if (news != null) { model.News = new NewsModel(news); }
+                else { model.IsError = true; model.Message = "Không tìm thấy bản tin này."; }
             }
             else
             {
-
+                var news = Context.GetConditionalNews(i => i.IsPublic == true)
+                                  .OrderByDescending(i => i.DatePosted).OrderBy(i => i.IsHotNew).FirstOrDefault();
+                if (news != null) { model.News = new NewsModel(news); }
             }
             model.SiteLinks.SetCurrentLink("tin tức");
             return View(model);

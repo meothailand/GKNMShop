@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MenuLink>  
+  <FirstLevel MenuText="Orders" Link="orders" IsActive="false">
+    <SubLevel MenuText="New Order" Link="neworder" IsActive="false"></SubLevel>
+    <SubLevel MenuText="Your Orders" Link="userorders" IsActive="false"></SubLevel>
+  </FirstLevel>  
+</MenuLink>

@@ -18,6 +18,7 @@ namespace GiaiKhatNgocMai.Infrastructure.Implementation
         {
             using (var context = new GiaikhatNgocMaiEntities())
             {
+                context.Configuration.AutoDetectChangesEnabled = false;
                 var user = context.Users.Include("Orders").SingleOrDefault(u => u.Email == email && u.Password == password);
                 return user;
             }

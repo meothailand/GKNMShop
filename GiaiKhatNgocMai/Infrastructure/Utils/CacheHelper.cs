@@ -11,6 +11,10 @@ using System.Web.Caching;
 using GiaiKhatNgocMai.Infrastructure.Interfaces;
 using GiaiKhatNgocMai.Infrastructure.Implementation;
 using GiaiKhatNgocMai.Settings;
+using GiaiKhatNgocMai.Areas.BackendSite.Models;
+using System.Xml;
+using GiaiKhatNgocMai.Infrastructure.Security;
+using System.IO;
 
 namespace GiaiKhatNgocMai.Infrastructure.Utils
 {
@@ -24,6 +28,8 @@ namespace GiaiKhatNgocMai.Infrastructure.Utils
         public const string CartSession = "Shopping-cart-session";
         public const string CheckoutProgressSession = "CheckoutProgressSession";
         public const string CustomerLoginSession = "CustomerLoginSession";
+        public const string UserLoginSession = "UserLoginSession";
+
         private static CacheHelper _cacheHelper;
         private IGiaiKhatNgocMaiDBContext Context = GKNMDBContext.Instance;
         public static CacheHelper _CacheHelper
@@ -150,5 +156,57 @@ namespace GiaiKhatNgocMai.Infrastructure.Utils
             HttpContext.Current.Session[CustomerLoginSession] = cus;
         }
 
+        public void SetLoggedInUser(LoginViewModel user)
+        {
+            var xmlDoc = new XmlDocument();
+            var xmlFilePath = HttpContext.Current.Server.MapPath("~/Areas/BackendSite/Models");
+            switch (user.Role)
+            {
+                case RoleType.Admin:
+                    xmlFilePath = Path.Combine(xmlFilePath, "UserAdminMenu.xml");
+                    break;
+                case RoleType.Editor:
+                    xmlFilePath = Path.Combine(xmlFilePath, "UserEditorMenu.xml");
+                    break;
+                case RoleType.Member:
+                    xmlFilePath = Path.Combine(xmlFilePath, "UserMemberMenu.xml");
+                    break;
+                default:
+                    break;
+            }
+            xmlDoc.Load(xmlFilePath);
+            var menu = new List<MenuLinkContainer>();
+            foreach (XmlElement node in xmlDoc.DocumentElement.ChildNodes)
+            {
+                var item = new MenuLinkContainer();
+                item.Menu = new MenuLink()
+                {
+                    IsCurrent = node.GetAttribute("IsActive") == "true",
+                    Link = node.GetAttribute("Link"),
+                    LinkText = node.GetAttribute("MenuText")
+                };
+                if (node.HasChildNodes)
+                {
+                    item.Links = node.ChildNodes.Cast<XmlElement>().Select(child => new MenuLink()
+                    {
+                        IsCurrent = child.GetAttribute("IsActive") == "true",
+                        LinkText = child.GetAttribute("MenuText"),
+                        Link = child.GetAttribute("Link")
+                    }).ToList();
+                }
+                menu.Add(item);
+            }
+            user.UserMenu = menu;
+            HttpContext.Current.Session[UserLoginSession] = user;
+        }
+
+        public LoginViewModel GetLoggedInUser()
+        {
+            if (HttpContext.Current.Session[UserLoginSession] != null)
+            {
+                return (LoginViewModel)HttpContext.Current.Session[UserLoginSession];
+            }
+            return null;
+        }
     }
 }

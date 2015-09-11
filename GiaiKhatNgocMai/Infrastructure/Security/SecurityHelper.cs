@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GiaiKhatNgocMai.Infrastructure.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,6 +22,19 @@ namespace GiaiKhatNgocMai.Infrastructure.Security
             var types = new string[] { "Admin", "Editor", "Member", "Customer" };
             return types.Contains(type);
         }
+
+        public static RoleType GetRoleType(string type)
+        {
+            switch (type)
+            {
+                case "Admin": return RoleType.Admin;
+                case "Editor": return RoleType.Editor;
+                case "Member": return RoleType.Member;
+                case "Customer": return RoleType.Customer;
+                default: throw new InvalidRoleTypeException();
+            }
+        }
+
 
         public static string GeneratePassword(int length)
         {

@@ -61,7 +61,7 @@ namespace GiaiKhatNgocMai.Controllers
         {
             quantity = quantity <= 0 ? 1 : quantity;
             var order = CacheHelper._CacheHelper.GetCartFromSession();
-            OrderDetailModel toUpdate = toUpdate = (order.OrderDetails.Exists(i => i.ItemId == itemId)) ?
+            OrderDetailModel toUpdate = (order.OrderDetails.Exists(i => i.ItemId == itemId)) ?
                             order.OrderDetails.SingleOrDefault(i => i.ItemId == itemId) :
                             new OrderDetailModel(Context.GetItem(itemId));
 
